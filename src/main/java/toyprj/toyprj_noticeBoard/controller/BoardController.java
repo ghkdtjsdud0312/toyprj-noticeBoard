@@ -1,17 +1,23 @@
 package toyprj.toyprj_noticeBoard.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 
 @Controller
 @RequestMapping("/board")
 public class BoardController {
 
+    // 저장한 것 조회
     @GetMapping("/save")
     public String saveForm() {
         return "save";
+    }
+
+    // 입력한 내용 저장
+    @PostMapping("/save")
+    // ModelAttribute 로테이션에 의해 BoardDTO의 boardDTO 객체를 찾아서 html의 name과 dto의 이름이 동일하다면 스프링이 해당하는 필드에 대한 setter를 호출하면서 dto에 담겨진 값을 setter method로 각각 담아준다.
+    public String save(@ModelAttribute BoardDTO boardDTO) { // @RequestParam은 html의 값을 불러오기 위해서 사용
+        return null;
     }
 }
