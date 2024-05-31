@@ -17,7 +17,7 @@ public class BoardController {
     // 입력한 내용 저장
     @PostMapping("/save")
     // ModelAttribute 로테이션에 의해 BoardDTO의 boardDTO 객체를 찾아서 html의 name과 dto의 이름이 동일하다면 스프링이 해당하는 필드에 대한 setter를 호출하면서 dto에 담겨진 값을 setter method로 각각 담아준다.
-    public String save(@ModelAttribute BoardDTO boardDTO) { // @RequestParam은 html의 값을 불러오기 위해서 사용
+    public String save(@ModelAttribute BoardDTO boardDTO) { // @RequestParam은 html의 값을 불러오기 위해서 사용하는 것인데 DTO를 세팅해주면 일일이 RequestParam 받아 올 필요 없이 DTO 하나로 받으면 된다.
         return null;
     }
 }

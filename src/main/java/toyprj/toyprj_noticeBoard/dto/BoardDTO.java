@@ -8,11 +8,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter // getter 만들어줌
-@Setter // setter 만들어줌
+@Getter // getter 만들어 줌
+@Setter // setter 만들어 줌
 @ToString // 필드 값 확인 시 사용
 @NoArgsConstructor // 기본 생성자
-@AllArgsConstructor // 모든 필드를 매개변수로 하는 생성자
+@AllArgsConstructor // 모든 필드를 매개 변수로 하는 생성자
 public class BoardDTO {
     private Long id;
     private String boardWriter;
@@ -20,8 +20,6 @@ public class BoardDTO {
     private String boardTitle;
     private String boardContents;
     private int boardHits; // 조회수
-    private LocalDateTime boardCreatedTime; // 작성시간
-    private LocalDateTime boardUpdatedTime; // 수정시간
-
-
+    private LocalDateTime boardCreatedTime; // 작성 시간
+    private LocalDateTime boardUpdatedTime; // 수정 시간
 }
