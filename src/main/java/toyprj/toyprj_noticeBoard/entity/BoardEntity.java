@@ -2,6 +2,7 @@ package toyprj.toyprj_noticeBoard.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 
 import javax.persistence.*;
 
@@ -32,5 +33,17 @@ public class BoardEntity extends BaseEntity{
     @Column
     private int boardHits;
 
+    // static 형태의 메서드로 구현
+    public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
+        BoardEntity boardEntity = new BoardEntity();
+
+        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+        boardEntity.setBoardPass(boardDTO.getBoardPass());
+        boardEntity.setBoardTitle(boardDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardDTO.getBoardContents());
+        boardEntity.setBoardHits(boardDTO.getBoardHits());
+
+        return boardEntity;
+    }
 
 }
