@@ -2,12 +2,14 @@ package toyprj.toyprj_noticeBoard.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 import toyprj.toyprj_noticeBoard.entity.BoardEntity;
 import toyprj.toyprj_noticeBoard.repository.BoardRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // DTO -> Entity 변환 (entity 클래스에서 시용)
 // Entity -> DTO 변환 (DTO 클래스에서 시용)
@@ -38,5 +40,23 @@ public class BoardService {
             boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
         }
         return boardDTOList;
+    }
+
+    // 조회수 증가
+    @Transactional // 수동적인 쿼리를 관리해야 하는 경우 사용
+    public void updateHits(Long id) {
+        boardRepository.updateHits(id);
+    }
+
+    // 게시글 데이터 조회
+    public BoardDTO findById(Long id) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+        if (optionalBoardEntity.isPresent()) {
+            BoardEntity boardEntity = optionalBoardEntity.get();
+            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+            return boardDTO;
+        } else {
+            return null;
+        }
     }
 }
