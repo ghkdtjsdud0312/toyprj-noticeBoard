@@ -2,9 +2,12 @@ package toyprj.toyprj_noticeBoard.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 import toyprj.toyprj_noticeBoard.service.BoardService;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,5 +28,14 @@ public class BoardController {
     public String save(@ModelAttribute BoardDTO boardDTO) { // @RequestParam은 html의 값을 불러오기 위해서 사용하는 것인데 DTO를 세팅해주면 일일이 RequestParam 받아 올 필요 없이 DTO 하나로 받으면 된다.
         boardService.save(boardDTO);
         return "index";
+    }
+
+    // 게시판 목록
+    @GetMapping("/")
+    public String findAll(Model model) {
+        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
+        List<BoardDTO> boardDTOList = boardService.findAll();
+        model.addAttribute("boardList", boardDTOList);
+        return "list";
     }
 }

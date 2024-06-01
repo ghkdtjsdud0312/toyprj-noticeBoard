@@ -6,6 +6,9 @@ import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 import toyprj.toyprj_noticeBoard.entity.BoardEntity;
 import toyprj.toyprj_noticeBoard.repository.BoardRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // DTO -> Entity 변환 (entity 클래스에서 시용)
 // Entity -> DTO 변환 (DTO 클래스에서 시용)
 // Entity(DB와 연관이 많이 되어 있어 노출이 되면 좋지 않다, 되도록이면 service 까지 오게 한다.)
@@ -26,4 +29,14 @@ public class BoardService {
         boardRepository.save(boardEntity);
     }
 
+    // 전체 조회(목록 글)
+    // entity -> DTO로 넘어오는 객체 만들기
+    public List<BoardDTO> findAll() {
+        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for (BoardEntity boardEntity : boardEntityList) {
+            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+        }
+        return boardDTOList;
+    }
 }
