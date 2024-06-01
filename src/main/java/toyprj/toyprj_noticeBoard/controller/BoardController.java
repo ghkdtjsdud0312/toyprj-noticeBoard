@@ -67,4 +67,11 @@ public class BoardController {
         return "detail";
 //        return "redirect:/board/" + boardDTO.getId();
     }
+
+    // 게시판 삭제
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        boardService.delete(id);
+        return "redirect:/board/";
+    }
 }
