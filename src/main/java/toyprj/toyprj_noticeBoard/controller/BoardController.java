@@ -51,11 +51,20 @@ public class BoardController {
         return "detail";
     }
 
-    // 게시판 수정
+    // 게시판 수정 조회
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("boardUpdate", boardDTO);
         return "update";
+    }
+
+    // 게시판 수정하기
+    @PostMapping("/update")
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model) {
+        BoardDTO board = boardService.update(boardDTO); // 수정이 끝나고 수정이 반영된 객체를 가져와서 그걸 가지고 DTO로 가져가는 것
+        model.addAttribute("board", board);
+        return "detail";
+//        return "redirect:/board/" + boardDTO.getId();
     }
 }
