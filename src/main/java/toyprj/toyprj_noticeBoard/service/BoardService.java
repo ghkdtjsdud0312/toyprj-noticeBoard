@@ -1,6 +1,10 @@
 package toyprj.toyprj_noticeBoard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyprj.toyprj_noticeBoard.dto.BoardDTO;
@@ -70,5 +74,15 @@ public class BoardService {
     // 게시글 삭제
     public void delete(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    // 페이징 요청 처리
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber() -1; // page 위치에 있는 값은 0부터 시작하기 때문이다.
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+        // 한 페이지당 3개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순 정렬
+        // Sort.by(Sort.Direction.DESC, "id") => sort에 id(Entity 기준)가 DESC 내림차순
+        Page<BoardEntity> boardEntities = // boardEntities : 페이징 처리된 데이터를 가져올 때
+                boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
     }
 }

@@ -1,6 +1,9 @@
 package toyprj.toyprj_noticeBoard.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +76,12 @@ public class BoardController {
     public String delete(@PathVariable Long id) {
         boardService.delete(id);
         return "redirect:/board/";
+    }
+
+    // 페이징 처리(몇 페이지에 대한 요청을 받았는지 봄)
+    @GetMapping("/paging") // /board/paging?page=1 -> 페이지 번호 바뀜(pageable -> 파라미터 값을 받아줌)
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) { // model은 페이징 된 데이터를 가지고 화면으로 넘어 가야해서 model 객체를 사용, page=1은 기본 값으로 설정
+//        pageable.getPageNumber(); // 몇 페이지가 요청 되었는지의 숫자를 나타냄
+        Page<BoardDTO> boardList = boardService.paging(pageable);
     }
 }
