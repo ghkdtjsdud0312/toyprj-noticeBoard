@@ -84,15 +84,17 @@ public class BoardController {
 //        pageable.getPageNumber(); // 몇 페이지가 요청 되었는지의 숫자를 나타냄
         Page<BoardDTO> boardList = boardService.paging(pageable);
 
-        int blockLimit = 3;
-        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int blockLimit = 3; // 페이지 번호 갯수
+        // startpage 페이지 설명 : pageable.getPageNumber() -> 현재 사용자가 요청한 페이지를 blockLimit 으로 나눠서 Math.ceil 소숫점을 올리는 작업에서 -1을 하고 blockLimit(선택한 페이지)에 곱하기를 하고 +1 해준다.
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 계산으로 나오는 값 : 1 4 7 10 ~~
+        // endPage 페이지 설명 : 삼항 연산자 사용 / ((startPage + blockLimit - 1) < boardList.getTotalPages()) -> 조건식 / 만족하면 endpage을 startPage + blockLimit - 1 / 만족 못하면 전체 페이지 값을 endpage -> boardList.getTotalPages()
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
 
         // page 갯수 20개
         // 현재 사용자가 3페이지
-        // 1 2 3
+        // 1 2 3 (blockLimit)
         // 현재 사용자가 7페이지
-        // 7 8 9
+        // 7 8 9 (blockLimit)
         // 보여지는 페이지 갯수 3개
         // 총 페이지 갯수 8개
 
@@ -100,6 +102,5 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "paging";
-
     }
 }
