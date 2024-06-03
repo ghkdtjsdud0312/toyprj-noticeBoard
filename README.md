@@ -16,3 +16,13 @@ SpringBoot - 게시판 만들기
  - 예를 들어 게시글 14개면
    - 한 페이지에 5개씩 보이게 하기 -> 총 3페이지 필요
    - 한 페이지에 3개씩 보이게 하기 -> 총 5페이지 필요
+ 7. 파일(이미지) 첨부하기
+ - 단일 파일 첨부
+ - 다중 파일 첨부
+ - 파일 첨부와 관련하여 추가 될 부분들
+   - save.html
+   - BoardDTO
+   - BoardService.save()
+   - BoardEntity
+   - BoardFileEntity, BoardFileRepository 추가
+   - detail.html
