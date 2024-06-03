@@ -101,6 +101,6 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        return "paging";
+        return "paging"; // paging.html로 이동
     }
 }
