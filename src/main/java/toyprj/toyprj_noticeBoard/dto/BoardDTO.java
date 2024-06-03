@@ -5,6 +5,7 @@ package toyprj.toyprj_noticeBoard.dto;
 // Entity 라는 것도 있지만 목적은 다르다.(다른 목적을 가짐)
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 import toyprj.toyprj_noticeBoard.entity.BoardEntity;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,14 @@ public class BoardDTO {
     private int boardHits; // 조회수
     private LocalDateTime boardCreatedTime; // 작성 시간
     private LocalDateTime boardUpdatedTime; // 수정 시간
+
+    // 파일 관리 DTO
+    // DTO에서 받아주는 부분은 boardFile만 동작을 한다.
+    private MultipartFile boardFile; // save.html -> Controller 파일 담는 용도
+    // service 클래스에서 사용
+    private String originalFileName; // 원본 파일 이름 조회 시
+    private String storedFileName; // 서버 저장용 파일 이름
+    private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
     // command + N -> genarate
     public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
