@@ -30,7 +30,8 @@
         <th>contents</th>
         <td th:text="${board.boardContents}"></td>
     </tr>
-    <tr>
+<!-- 이미지가 있을 때(1)와 없을 때(0) 구분 -->
+    <tr th:if="${board.fileAttached == 1}">
 <!-- boardDTO에서 파일 이름 가져오기 -->
         <th>image</th>
         <td><img th:scr="@{|/upload/${board.storedFileName}|}" alt=""></td>
