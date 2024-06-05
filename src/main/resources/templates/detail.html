@@ -30,6 +30,11 @@
         <th>contents</th>
         <td th:text="${board.boardContents}"></td>
     </tr>
+    <tr>
+<!-- boardDTO에서 파일 이름 가져오기 -->
+        <th>image</th>
+        <td><img th:scr="@{|/upload/${board.storedFileName}|}" alt=""></td>
+    </tr>
 </table>
     <button onclick="listReq()">목록</button>
     <button onclick="updateReq()">수정</button>

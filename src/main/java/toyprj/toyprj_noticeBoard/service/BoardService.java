@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 import toyprj.toyprj_noticeBoard.entity.BoardEntity;
 import toyprj.toyprj_noticeBoard.entity.BoardFileEntity;
+import toyprj.toyprj_noticeBoard.repository.BoardFileRepository;
 import toyprj.toyprj_noticeBoard.repository.BoardRepository;
 
 import java.io.File;
@@ -31,7 +32,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
 
+    // 주입 받기
     private final BoardRepository boardRepository;
+    private final BoardFileRepository boardFileRepository;
 
     public void save(BoardDTO boardDTO) throws IOException {
         // 파일 첨부 여부에 따라 로직 분리
@@ -58,12 +61,13 @@ public class BoardService {
             BoardEntity board = boardRepository.findById(saveId).get(); // 부모 엔티티로부터 다시 받아온다, 다시 db에서 엔티티르 가져옴
 
             BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFileName, storedFileName);
-
+            boardFileRepository.save(boardFileEntity); // DB에 저장함
         }
     }
 
     // 전체 조회(목록 글)
     // entity -> DTO로 넘어오는 객체 만들기
+    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
@@ -80,6 +84,7 @@ public class BoardService {
     }
 
     // 게시글 데이터 조회
+    @Transactional
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {

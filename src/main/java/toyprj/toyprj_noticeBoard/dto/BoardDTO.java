@@ -39,14 +39,6 @@ public class BoardDTO {
     private String storedFileName; // 서버 저장용 파일 이름
     private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
-    // mappedBy = "boardEntity" : boardFileEntity에 boardEntity과 같게 해야 한다.
-    // 부모 엔티티가 삭제되면 자식 엔티티도 삭제 된다.(부모가 자식의 삭제 생명 주기 관리)
-    // cascade = CascadeType.REMOVE : 부모 엔티티와 자식 엔티티 사이의 연관관계를 제거해도, 자식 엔티티는 삭제되지 않고 그대로 DB에 남아 있다.
-    // orphanRemoval = true : 부모 엔티티와 자식 엔티티 사이의 연관관계를 제거하면, 자식 엔티티는 고아 객체로 취급되어 DB에서 삭제됩니다.
-    // fetch = FetchType.LAZY :지연 로딩, 필요한 것만 가져올 수 있게
-    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>(); // 게시글 하나에 여러 개가 올 수 있다. / boardFileEntity 참조관계 형성
-
     // command + N -> genarate
     public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
         this.id = id;
@@ -66,6 +58,17 @@ public class BoardDTO {
         boardDTO.setBoardHits(boardEntity.getBoardHits());
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
+        if (boardEntity.getFileAttached() == 0) {
+            boardDTO.setFileAttached(boardEntity.getFileAttached()); // 0
+        } else {
+            boardDTO.setFileAttached(boardEntity.getFileAttached()); // 1
+            // 파일 이름을 가져가야 함
+            // originalFileName, storedFileName : board_file_table(BoardFileEntity)
+            // join 문법
+            // select * from board_table b, board_file_table bf where b.id=bf.board_id and where b.id=?
+            boardDTO.setOriginalFileName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());
+        }
         return boardDTO;
     }
 }
