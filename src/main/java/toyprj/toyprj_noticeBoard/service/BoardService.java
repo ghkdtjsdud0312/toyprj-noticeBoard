@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import toyprj.toyprj_noticeBoard.dto.BoardDTO;
 import toyprj.toyprj_noticeBoard.entity.BoardEntity;
+import toyprj.toyprj_noticeBoard.entity.BoardFileEntity;
 import toyprj.toyprj_noticeBoard.repository.BoardRepository;
 
 import java.io.File;
@@ -51,8 +52,13 @@ public class BoardService {
             // 5. 해당 경로에 파일 저장
             boardFile.transferTo(new File(savePath)); // 지정된 경로로 파일을 넘긴다.
             // 6. board_table에 해당 데이터 save 처리
-
+            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO); // id 값이 없다.
             // 7. board_file_table에 해당 데이터 save 처리
+            Long saveId = boardRepository.save(boardEntity).getId();
+            BoardEntity board = boardRepository.findById(saveId).get(); // 부모 엔티티로부터 다시 받아온다, 다시 db에서 엔티티르 가져옴
+
+            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFileName, storedFileName);
+
         }
     }
 

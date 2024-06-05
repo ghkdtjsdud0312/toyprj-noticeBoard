@@ -29,5 +29,11 @@ public class BoardFileEntity extends BaseEntity{
     // jpa로 부모 자식 관계를 맺어 놓으면 그 부모 엔티티 객체 조회를 했을 때 자식 엔티티 객체를 같이 조회를 할 수 있다.
     private BoardEntity boardEntity; // 부모 엔티티 타입으로 적어야 한다.
 
-
+    public static BoardFileEntity toBoardFileEntity(BoardEntity boardEntity, String originalFileName, String storedFileName) {
+        BoardFileEntity boardFileEntity = new BoardFileEntity();
+        boardFileEntity.setOriginalFileName(originalFileName);
+        boardFileEntity.setStoredFileName(storedFileName);
+        boardFileEntity.setBoardEntity(boardEntity); // pk 값이 아니라 부모 엔티티 객체를 넘겨줘야 한다.
+        return boardFileEntity;
+    }
 }
