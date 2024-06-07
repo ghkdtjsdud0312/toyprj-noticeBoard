@@ -34,7 +34,7 @@
     <tr th:if="${board.fileAttached == 1}">
 <!-- boardDTO에서 파일 이름 가져오기 -->
         <th>image</th>
-        <td><img th:scr="@{|/upload/${board.storedFileName}|}" alt=""></td>
+        <td th:each="fileName: ${board.storedFileName}"><img th:src="@{|/upload/${fileName}|}" alt=""></td>
     </tr>
 </table>
     <button onclick="listReq()">목록</button>
