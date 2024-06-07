@@ -35,8 +35,8 @@ public class BoardDTO {
     // DTO에서 받아주는 부분은 boardFile만 동작을 한다.
     private List<MultipartFile> boardFile; // save.html -> Controller 파일 담는 용도
     // service 클래스에서 사용
-    private String originalFileName; // 원본 파일 이름 조회 시
-    private String storedFileName; // 서버 저장용 파일 이름
+    private List<String> originalFileName; // 원본 파일 이름 조회 시
+    private List<String> storedFileName; // 서버 저장용 파일 이름
     private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
     // command + N -> genarate
@@ -61,13 +61,22 @@ public class BoardDTO {
         if (boardEntity.getFileAttached() == 0) {
             boardDTO.setFileAttached(boardEntity.getFileAttached()); // 0
         } else {
+            List<String> originalFileNameList = new ArrayList<>();
+            List<String> storedFileNameList = new ArrayList<>();
             boardDTO.setFileAttached(boardEntity.getFileAttached()); // 1
             // 파일 이름을 가져가야 함
             // originalFileName, storedFileName : board_file_table(BoardFileEntity)
             // join 문법
             // select * from board_table b, board_file_table bf where b.id=bf.board_id and where b.id=?
-            boardDTO.setOriginalFileName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
-            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());
+            for (BoardFileEntity boardFileEntity : boardEntity.getBoardFileEntityList()) {
+                originalFileNameList.add(boardFileEntity.getOriginalFileName());
+                storedFileNameList.add(boardFileEntity.getStoredFileName());
+                 }
+            boardDTO.setOriginalFileName(originalFileNameList);
+            boardDTO.setStoredFileName(storedFileNameList);
+            // 단일 파일일 경우
+//            boardDTO.setOriginalFileName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+//            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());
         }
         return boardDTO;
     }
