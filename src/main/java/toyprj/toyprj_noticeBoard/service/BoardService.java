@@ -44,24 +44,30 @@ public class BoardService {
             boardRepository.save(boardEntity);
         } else  {
             // 참부 파일 있음
-            // 1. DTO에 담긴 파일을 꺼냄
-            MultipartFile boardFile = boardDTO.getBoardFile();
-            // 2. 파일의 이름 가져옴
-            String originalFileName = boardFile.getOriginalFilename();
-            // 3. 서버 저장용 이름을 만듦(내사진.jpeg -> 840549092_내사진.jpeg => 파일끼리 겹치지 않게 하기 위해서)
-            String storedFileName = System.currentTimeMillis() + " " + originalFileName; // 난수 숫자 필요
-            // 4. 저장 경로 설정
-            String savePath = "/Users/hwangseon-yeong/springboot.img/" + storedFileName; // 맥인 경우 : /Users/사용자 이름/springboot.img/890493583_내사진.jpeg
-            // 5. 해당 경로에 파일 저장
-            boardFile.transferTo(new File(savePath)); // 지정된 경로로 파일을 넘긴다.
+            // 번호 있는 것은 : 단일 파일, 번호 없이 정렬된 것은 다중 파일
+            // 여러 파일일 경우 6,7 먼저 나와야 한다.
             // 6. board_table에 해당 데이터 save 처리
             BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO); // id 값이 없다.
             // 7. board_file_table에 해당 데이터 save 처리
             Long saveId = boardRepository.save(boardEntity).getId();
             BoardEntity board = boardRepository.findById(saveId).get(); // 부모 엔티티로부터 다시 받아온다, 다시 db에서 엔티티르 가져옴
 
-            BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFileName, storedFileName);
-            boardFileRepository.save(boardFileEntity); // DB에 저장함
+            // 파일이 여러 개인 상황 : DTO에 담긴 파일을 꺼냄
+            for (MultipartFile boardFile: boardDTO.getBoardFile()) { // 반복문으로 파일을 꺼내고 있음
+                // 1. DTO에 담긴 파일을 꺼냄
+//            MultipartFile boardFile = boardDTO.getBoardFile();
+                // 2. 파일의 이름 가져옴
+                String originalFileName = boardFile.getOriginalFilename();
+                // 3. 서버 저장용 이름을 만듦(내사진.jpeg -> 840549092_내사진.jpeg => 파일끼리 겹치지 않게 하기 위해서)
+                String storedFileName = System.currentTimeMillis() + " " + originalFileName; // 난수 숫자 필요
+                // 4. 저장 경로 설정
+                String savePath = "/Users/hwangseon-yeong/springboot.img/" + storedFileName; // 맥인 경우 : /Users/사용자 이름/springboot.img/890493583_내사진.jpeg
+                // 5. 해당 경로에 파일 저장
+                boardFile.transferTo(new File(savePath)); // 지정된 경로로 파일을 넘긴다.
+
+                BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFileName, storedFileName);
+                boardFileRepository.save(boardFileEntity); // DB에 저장함
+            }
         }
     }
 

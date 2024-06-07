@@ -33,7 +33,7 @@ public class BoardDTO {
 
     // 파일 관리 DTO
     // DTO에서 받아주는 부분은 boardFile만 동작을 한다.
-    private MultipartFile boardFile; // save.html -> Controller 파일 담는 용도
+    private List<MultipartFile> boardFile; // save.html -> Controller 파일 담는 용도
     // service 클래스에서 사용
     private String originalFileName; // 원본 파일 이름 조회 시
     private String storedFileName; // 서버 저장용 파일 이름
