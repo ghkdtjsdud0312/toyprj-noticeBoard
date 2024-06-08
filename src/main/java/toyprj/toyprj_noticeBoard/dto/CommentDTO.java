@@ -14,5 +14,5 @@ public class CommentDTO {
     private String commentWriter; // 작성자
     private String commentContents; // 작성 내용
     private Long boardId; // 게시물 번호(fk)
-    private LocalDateTime commentSavedTime; // 댓글 작성 시간
+    private LocalDateTime commentCreatedTime; // 댓글 작성 시간
 }
