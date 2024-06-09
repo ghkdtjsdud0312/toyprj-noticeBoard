@@ -20,6 +20,7 @@ public class CommentController {
     @PostMapping("/save")
     public @ResponseBody String save(@ModelAttribute CommentDTO commentDTO) {
         System.out.println("commentDTO = " + commentDTO);
+        commentService.save(commentDTO);
         return "요청 성공";
     }
 }

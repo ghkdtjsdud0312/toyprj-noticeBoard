@@ -2,6 +2,7 @@ package toyprj.toyprj_noticeBoard.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import toyprj.toyprj_noticeBoard.dto.CommentDTO;
 
 import javax.persistence.*;
 
@@ -25,4 +26,7 @@ public class CommentEntity extends BaseEntity{
     @JoinColumn(name = "board_id")
     private BoardEntity boardEntity;
 
+    public static void toSaveEntity(CommentDTO commentDTO) {
+
+    }
 }
