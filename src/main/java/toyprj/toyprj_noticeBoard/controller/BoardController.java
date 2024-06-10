@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toyprj.toyprj_noticeBoard.dto.BoardDTO;
+import toyprj.toyprj_noticeBoard.dto.CommentDTO;
 import toyprj.toyprj_noticeBoard.service.BoardService;
+import toyprj.toyprj_noticeBoard.service.CommentService;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService; // 생성자 주입 방식으로 의존성을 주입 받게 된다.
+    private final CommentService commentService; // 댓글, 주입 받음
 
     // 저장한 것 조회
     @GetMapping("/save")
@@ -52,6 +55,9 @@ public class BoardController {
         // 두 번의 호출이 일어난다.(조회수, id로 데이터 가져오기)
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        // 댓글 목록 가져오기
+        List<CommentDTO> commentDTOList = commentService.findAll(id); //findById 받아옴
+        model.addAttribute("commentList",commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
         return "detail";
