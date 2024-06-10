@@ -87,13 +87,18 @@
                 "commentContents" : contents,
                 "boardId" : id
             },
+            <!-- 화면에 그려줄 내용 -->
             success : function(res) {
                 console.log("요청 성공", res);
+            <!-- 계속 추가가 되기 때문에 let 사용 -->
+             <!-- 누적해서 추가될 수 있도록 -> output -->
                 let output = "<table>";
                 output += "<tr><th>댓글 번호</th>";
                 output += "<th>작성자</th>";
                 output += "<th>내용</th>";
                 output += "<th>작성 시간</th></tr>";
+                 <!-- for문이 돌면서 댓글 하나하나가 채워진다. -->
+                  <!-- 콘솔 창에 res 확인해보면 배열 형태로 들어가진다. [i]는 0부터 접근 -->
                 for (let i in res) {
                    output += "<tr>";
                    output += "<td>" + res[i].id + "</td>";
@@ -103,7 +108,9 @@
                    output += "</tr>";
                }
                output += "</table>";
+                <!-- 작성된 내용들이 innerHTML로 인해 id="comment-list" 내용에 뿌려짐-->
                document.getElementById('comment-list').innerHTML = output;
+                <!-- value 목록 추가 -->
                document.getElementById('commentWriter').value = '';
                document.getElementById('commentContents').value = '';
             },
